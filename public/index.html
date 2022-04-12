@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="d-flex container-fluid vh-100">
+        <div class="row flex-nowrap flex-fill">
+            <div class="col-auto col-md-4 col-xl-3 px-sm-3 px-0 bg-dark">
+
+                <div class="card p-3 px-4 mt-lg-5">
+                    <div class="card-title">
+                        Your personal code
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-line me-2" id='personal_code_paragraph'>
+                           DDDDDD
+                        </span>
+                        <button id="copy_button" class="btn btn-sm btn-success copy-button">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card p-3 px-4 mt-lg-5">
+                    <div class="card-title">
+                        Personal Code
+                    </div>
+                    <div class="card-body">
+                        <input class="form-control" id="personal_code_input" type="text" />
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-around">
+                        <button class="btn btn-info" id="chat_button">chat</button>
+                        <button class="btn btn-info" id="video_button">video</button>
+                    </div>
+                </div>
+
+                <div class="card px-4 mt-lg-5">
+                    <div class="card-title">
+                        Stranger
+                    </div>
+                    <div class="card-body d-flex justify-content-around">
+                        <button class="btn btn-info">Chat</button>
+                        <button class="btn btn-info">video</button>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group d-flex justify-content-around">
+                            <input class="form-check-input" type="checkbox" name="allow_stranger" id="allow_stranger">
+                            <label class="form-check-label" for="allow_stranger">Allow connection from stranger</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6  py-3 bg-black">
+                <div class="card h-100">
+                    <div class="card-title">
+                        Video chat
+                    </div>
+                    <div class="card-body bg-white">
+                        <div class="d-flex justify-content-around">
+                            <video class="d-none" src="" autoplay id="remote_video"></video>
+                            <video class="d-none" src="" autoplay id="local_video"></video>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-around" id="call_buttons">
+                        <button class="btn btn-primary" id="mic_button">mic</button>
+                        <button class="btn btn-primary" id="camera_button">Cam</button>
+                        <button class="btn btn-danger" id="hang_up_button">Close</button>
+                        <button class="btn btn-info" id="switch_camera">switch</button>
+                        <button class="btn btn-primary" id="record_camera">record</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/main.js" type="module"></script>
+    <script src="./js/bootstrap.min.js"></script>
+</body>
+</html>
