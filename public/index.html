@@ -1,87 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <title>Document</title>
-</head>
-<body>
-    <div class="d-flex container-fluid vh-100">
-        <div class="row flex-nowrap flex-fill">
-            <div class="col-auto col-md-4 col-xl-3 px-sm-3 px-0 bg-dark">
-
-                <div class="card p-3 px-4 mt-lg-5">
-                    <div class="card-title">
-                        Your personal code
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+    <head>
+        <title>Meet the strangers</title>
+        <link rel="stylesheet" href="css/css-style.css">
+    </head>
+    <body>
+        <div class="main_container">
+        <div class="dashboard_container">
+            <div class="logo_container">
+                <img src="images/images-logo.png" style="width:100%">
+            </div>
+            <div>
+                <div class="description_container">
+                    <p class="description_container_paragraph">
+                        Talk with other user by passing his personal code or talk with strangers!
+                    </p>
+                </div>
+                <div class="personal_code_container">
+                    <div class="personal_code_title_container">
+                        <p class="personal_code_title_paragraph">
+                            Your personal code
+                        </p>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-line me-2" id='personal_code_paragraph'>
-                           DDDDDD
-                        </span>
-                        <button id="copy_button" class="btn btn-sm btn-success copy-button">
-                            Copy
+                    <div class="personal_code_value_container">
+                        <p class="personal_code_value_paragraph" id="personal_code_paragraph">DDDDDD</p>
+                        <button class="personal_code_copy_button" id="personal_code_copy_button">
+                            <img src="images/images-copyButton.png">
                         </button>
                     </div>
                 </div>
-
-                <div class="card p-3 px-4 mt-lg-5">
-                    <div class="card-title">
-                        Personal Code
+                </div>
+                <div class="personal_code_connecting_container">
+                    <p class="personal_code_connecting_paragraph">Personal Code</p>
+                    <div class="personal_code_connecting_input_container">
+                        <input class="personal_code_input" id="personal_code_input">
                     </div>
-                    <div class="card-body">
-                        <input class="form-control" id="personal_code_input" type="text" />
-                    </div>
-
-                    <div class="card-footer d-flex justify-content-around">
-                        <button class="btn btn-info" id="chat_button">chat</button>
-                        <button class="btn btn-info" id="video_button">video</button>
+                    <div class="personal_code_connecting_buttons_container">
+                        <button class="connecting_button" id="personal_code_chat_button">
+                            <img src="images/images-chatButton.png" class="connecting_buttons_image">
+                        </button>
+                        <button class="connecting_button display_none" id="personal_code_video_button">
+                            <img src="images/images-videoButton.png" class="connecting_buttons_image">
+                        </button>
                     </div>
                 </div>
-
-                <div class="card px-4 mt-lg-5">
-                    <div class="card-title">
-                        Stranger
-                    </div>
-                    <div class="card-body d-flex justify-content-around">
-                        <button class="btn btn-info">Chat</button>
-                        <button class="btn btn-info">video</button>
-                    </div>
-                    <div class="card-footer">
-                        <div class="form-group d-flex justify-content-around">
-                            <input class="form-check-input" type="checkbox" name="allow_stranger" id="allow_stranger">
-                            <label class="form-check-label" for="allow_stranger">Allow connection from stranger</label>
-                        </div>
+                <div class="stranger_connecting_container">
+                    <p class="stranger_title_container">Stranger</p>
+                    <div class="stranger_buttons_container">
+                        <button class="connecting_button" id="stranger_chat_button">
+                            <img src="images/images-chatButton.png" class="connecting_buttons_image">
+                        </button>
+                        <button class="connecting_button display_none" id="stranger_video_button">
+                            <img src="images/images-videoButton.png" class="connecting_buttons_image">
+                        </button>
                     </div>
                 </div>
-
+                <div class="checkbox_container">
+                    <div class="checkbox_connection" id="allow_strangers_checkbox">
+                        <img id="allow_strangers_checkbox_image" class="display_none" src="images/images-check.png">
+                    </div>
+                    <p class="checkbox_container_paragraph">Allow connection from strangers</p>
+                </div>
+                <div class="dashboard_blur display_none" id="dashboard_blur"></div>
             </div>
-            <div class="col-6  py-3 bg-black">
-                <div class="card h-100">
-                    <div class="card-title">
-                        Video chat
-                    </div>
-                    <div class="card-body bg-white">
-                        <div class="d-flex justify-content-around">
-                            <video class="d-none" src="" autoplay id="remote_video"></video>
-                            <video class="d-none" src="" autoplay id="local_video"></video>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-around" id="call_buttons">
-                        <button class="btn btn-primary" id="mic_button">mic</button>
-                        <button class="btn btn-primary" id="camera_button">Cam</button>
-                        <button class="btn btn-danger" id="hang_up_button">Close</button>
-                        <button class="btn btn-info" id="switch_camera">switch</button>
-                        <button class="btn btn-primary" id="record_camera">record</button>
-                    </div>
-                    
+        <div class="call_container">
+            <div class="videos_container">
+                <div id="video_placeholder" class="videos_placeholder">
+                    <img src="images/images-logo.png" style="width:100%">
+                </div>
+                <video class="remote_video display_none" autoplay id="remote_video"></video>
+                <div class="local_video_container">
+                    <video class="local_video" id="local_video" autoplay></video>
+                </div>
+                <div class="call_buttons_container display_none" id="call_buttons">
+                    <button class="call_button_small" id="mic_button">
+                        <img src="images/images-mic.png" id="mic_button_image">
+                    </button>
+                    <button class="call_button_small" id="camera_button">
+                        <img src="images/images-camera.png" id="camera_button_image">
+                    </button>
+                    <button class="call_button_large" id="hang_up_button">
+                        <img src="images/images-hangUp.png">
+                    </button>
+                    <button class="call_button_small" id="screen_sharing_button">
+                        <img src="images/images-switchCameraScreenSharing.png">
+                    </button>
+                    <button class="call_button_small" id="start_recording_button">
+                        <img src="images/images-recordingStart.png">
+                    </button>
+                </div>
+                <div class="finish_chat_button_container display_none" id="finish_chat_button_container">
+                    <button class="call_button_large" id="finish_chat_call_button">
+                        <img src="images/images-hangUp.png">
+                    </button>
+                </div>
+                <div class="video_recording_buttons_container display_none" id="video_recording_buttons">
+                    <button id="pause_recording_button">
+                        <img src="images/images-pause.png">
+                    </button>
+                    <button id="resume_recording_button" class="display_none">
+                        <img src="images/images-resume.png">
+                    </button>
+                    <button id="stop_recording_button">
+                        Stop recording
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/main.js" type="module"></script>
-    <script src="./js/bootstrap.min.js"></script>
-</body>
+        <div class="messenger_container">
+            <div class="messages_container" id="messages_container"></div>
+            <div class="new_message_container display_none" id="new_message">
+                <input class="new_message_input" id="new_message_input" type="text" placeholder="Type your message...">
+                <button class="send_message_button" id="send_message_button">
+                    <img class="send_message_button_image" src="images/images-sendMessageButton.png">
+                </button>
+            </div>
+        </div>
+        <div id="dialog"></div>    
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./js/elements.js" type="module"></script>
+        <script src="./js/constants.js" type="module"></script>
+        <script src="./js/ui.js" type="module"></script>
+        <script src="./js/wss.js" type="module"></script>
+        <script src="./js/store.js" type="module"></script>
+        <script src="./js/WebRtcHandler.js" type="module"></script>
+        <script src="./js/main.js" type="module"></script>
+    </body>
 </html>
