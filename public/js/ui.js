@@ -6,6 +6,15 @@ export const updatePersonalCode = (code) => {
   personalcode.innerHTML = code;
 };
 
+export const updateLocalVideo=(stream)=>{
+    const localvideo = document.getElementById("local_video")
+    localvideo.srcObject = stream;
+
+    localvideo.addEventListener('loadedmetadata',()=>{
+        localvideo.play();
+    })
+}
+
 export const showIncomingCallDialog = (calltype, accept, reject) => {
   const calltypeinfo =
     calltype == constants.CallType.CHAT_PERSONAL_CODE ? "chat" : "video";
