@@ -29,7 +29,21 @@ io.on("connection", (socket) => {
 
         io.to(code).emit('pre-offer', data);
     }
+    else{
+      const data = {
+        preOfferAnswer: 'CALL_NOT_FOUND',
+      }
+      io.to(socket.id).emit('pre-offer-answer',data);
+    }
   });
+
+  socket.on('pre-offer-answer',(data)=>{
+      const connectedPeer = connectedPeers.find(socketid=> socketid === data.callerId)
+
+      if(connectedPeer)
+        io.to(data.callerId).emit('pre-offer-answer', data);
+
+  })
 });
 
 app.use(express.static("public"));

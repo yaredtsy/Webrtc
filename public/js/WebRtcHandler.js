@@ -3,6 +3,11 @@ import * as wss from "./wss.js";
 import * as ui from "./ui.js";
 
 let connectedUserDetails = {};
+
+
+export const getLocalPreview = ()=>{
+  
+}
 export const sentPreOffer = (calltype, code) => {
   connectedUserDetails = {
     calltype,
@@ -17,7 +22,7 @@ export const sentPreOffer = (calltype, code) => {
       calltype,
       code,
     };
-    ui.showingCallingDialog(callingDianlogCallHandler)
+    ui.showingCallingDialog(callingDianlogCallHandler);
     wss.sendPreOffer(data);
   }
 
@@ -26,12 +31,11 @@ export const sentPreOffer = (calltype, code) => {
 
 export const handlePreOffer = (data) => {
   const { callerId, calltype } = data;
+
   connectedUserDetails = {
     calltype,
     socketId: callerId,
   };
-
-
 
   if (
     calltype == constants.CallType.CHAT_PERSONAL_CODE ||
@@ -40,10 +44,48 @@ export const handlePreOffer = (data) => {
     ui.showIncomingCallDialog(calltype, acceptCallBack, rejectCallType);
   }
 };
-const acceptCallBack = () => {};
+const acceptCallBack = () => {
+  sendPreOfferAnswer(constants.PreOfferAnswer.CALL_ACCEPTED);
 
-const rejectCallType = () => {};
+  ui.showCallElement(connectedUserDetails.calltype)
+};
 
-const callingDianlogCallHandler = () =>{
-    console.log("it works");
+const rejectCallType = () => {
+  sendPreOfferAnswer(constants.PreOfferAnswer.CALL_REJECTED);
+};
+
+const callingDianlogCallHandler = () => {
+  console.log("it works");
+
+};
+
+const sendPreOfferAnswer = (preOfferAnswer) => {
+  const data = {
+    callerId: connectedUserDetails.socketId,
+    preOfferAnswer,
+    calltype: connectedUserDetails.calltype
+  };
+  ui.removeALlDiallogs()
+  wss.sendPreOfferAnswer(data);
+};
+
+
+export const handlePreOfferAnswer = (data) =>{
+  const { preOfferAnswer} = data;
+  ui.removeALlDiallogs();
+  
+  if(preOfferAnswer == constants.PreOfferAnswer.CALL_NOT_FOUND){
+    ui.showInfoDialog(preOfferAnswer)
+  }
+
+  if(preOfferAnswer == constants.PreOfferAnswer.CALL_UNAVAILABLE){
+    ui.showInfoDialog(preOfferAnswer)
+  }
+  if(preOfferAnswer == constants.PreOfferAnswer.CALL_REJECTED){
+    ui.showInfoDialog(preOfferAnswer)
+  }
+  if(preOfferAnswer == constants.PreOfferAnswer.CALL_ACCEPTED){
+    console.log(data.calltype);
+    ui.showCallElement(data.calltype)
+  }
 }
