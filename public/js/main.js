@@ -4,7 +4,7 @@ import * as webRtcHandler from "./webRtcHandler.js";
 import * as constants from "./constants.js";
 
 const socket = io("/");
-
+webRtcHandler.getLocalPreview()
 wss.register(socket);
 
 const personalCodeCopy = document.getElementById("personal_code_copy_button");

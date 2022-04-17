@@ -21,29 +21,38 @@ io.on("connection", (socket) => {
     const { calltype, code } = data;
     const connectPeer = connectedPeers.find((peer) => peer == code);
 
-    if(connectPeer){
-        const data = {
-            callerId:socket.id,
-            calltype
-        }
-
-        io.to(code).emit('pre-offer', data);
-    }
-    else{
+    if (connectPeer) {
       const data = {
-        preOfferAnswer: 'CALL_NOT_FOUND',
-      }
-      io.to(socket.id).emit('pre-offer-answer',data);
+        callerId: socket.id,
+        calltype,
+      };
+
+      io.to(code).emit("pre-offer", data);
+    } else {
+      const data = {
+        preOfferAnswer: "CALL_NOT_FOUND",
+      };
+      io.to(socket.id).emit("pre-offer-answer", data);
     }
   });
 
-  socket.on('pre-offer-answer',(data)=>{
-      const connectedPeer = connectedPeers.find(socketid=> socketid === data.callerId)
+  socket.on("pre-offer-answer", (data) => {
+    const connectedPeer = connectedPeers.find(
+      (socketid) => socketid === data.callerId
+    );
 
-      if(connectedPeer)
-        io.to(data.callerId).emit('pre-offer-answer', data);
+    if (connectedPeer) io.to(data.callerId).emit("pre-offer-answer", data);
+  });
 
-  })
+  socket.on("webRTC-signaling", (data) => {
+    const { socketid } = data;
+    console.log(" webRTC-signaling -==> ", socketid);
+    const connectedPeer = connectedPeers.find((id) => socket.id === id);
+
+    if (connectedPeer) {
+      io.to(socketid).emit("webRTC-signaling", data);
+    }
+  });
 });
 
 app.use(express.static("public"));

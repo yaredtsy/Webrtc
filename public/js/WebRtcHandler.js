@@ -11,14 +11,14 @@ const defaultConstraints ={
   video: true,
 }
 
-const configration = {
+
+const configuration = {
   iceServers: [
     {
-      urls: 'stun:stun.l.google.com:13902'
-    }
+      urls: "stun:stun.l.google.com:13902",
+    },
   ],
-}
-
+};
 export const getLocalPreview = ()=>{
   navigator.mediaDevices.getUserMedia(defaultConstraints)
     .then((stream)=>{
@@ -31,10 +31,27 @@ export const getLocalPreview = ()=>{
 }
 
 const createPeerConnection = ()=>{
-  peerconnection = new RTCPeerConnection(configration);
+  peerconnection = new RTCPeerConnection(configuration);
+  console.log("<=-createPeerConnection-=>");
+  console.log(peerconnection)
+
+  peerconnection.onicecandidateerror = (error)=>{
+    console.log("on error ");
+    console.log(error);
+  }
 
   peerconnection.onicecandidate = (event)=>{
+    console.log("ice candidate founded ");
+
     if(event){
+
+        wss.sendDataUsingWebRTCSingling({
+
+          socketid: store.getState().remoteSocketID,
+          type:constants.webRTCSignaling.ICE_CANDIDATE,
+          candidate: event.candidate
+
+        })
 
     }
   }
@@ -67,6 +84,8 @@ export const sentPreOffer = (calltype, code) => {
     socketId: code,
   };
 
+  store.setRemoteSocket(code)
+
   if (
     calltype == constants.CallType.CHAT_PERSONAL_CODE ||
     calltype == constants.CallType.VIDEO_PERSONAL_CODE
@@ -89,7 +108,7 @@ export const handlePreOffer = (data) => {
     calltype,
     socketId: callerId,
   };
-
+  store.setRemoteSocket(callerId)
   if (
     calltype == constants.CallType.CHAT_PERSONAL_CODE ||
     calltype == constants.CallType.VIDEO_PERSONAL_CODE
@@ -99,7 +118,7 @@ export const handlePreOffer = (data) => {
 };
 const acceptCallBack = () => {
   sendPreOfferAnswer(constants.PreOfferAnswer.CALL_ACCEPTED);
-  createPeerConnection(connectedUserDetails.calltype)
+  createPeerConnection()
 
   ui.showCallElement(connectedUserDetails.calltype)
 };
@@ -139,8 +158,55 @@ export const handlePreOfferAnswer = (data) =>{
     ui.showInfoDialog(preOfferAnswer)
   }
   if(preOfferAnswer == constants.PreOfferAnswer.CALL_ACCEPTED){
-    console.log(data.calltype);
-    createPeerConnection(data.calltype)
+    
+    createPeerConnection()
     ui.showCallElement(data.calltype)
+    sendWebRTcOffer()
+    console.log(connectedUserDetails);
+  }
+}
+
+const sendWebRTcOffer = async() =>{
+  console.log(" sendWebRTcOffer ");
+
+  const offer = await peerconnection.createOffer();
+  await peerconnection.setLocalDescription(offer);
+
+  wss.sendDataUsingWebRTCSingling({
+    socketid: store.getState().remoteSocketID,
+    type: constants.webRTCSignaling.OFFER,
+    offer: offer
+  })
+
+}
+
+export const handleWebRTCOffer = async(data)=>{
+ 
+  await peerconnection.setRemoteDescription(data.offer)
+  const answer = await peerconnection.createAnswer();
+  console.log(answer);
+  await peerconnection.setLocalDescription(answer)
+
+  wss.sendDataUsingWebRTCSingling({
+    socketid: store.getState().remoteSocketID,
+    type:constants.webRTCSignaling.ANSWER,
+    answer: answer
+  })
+
+}
+
+export const handleWebRTCAnswer = async(data)=>{
+
+  await peerconnection.setRemoteDescription(data.answer)
+}
+
+export const handleWebRTCCandidate= async(data)=>{
+  try {
+    await peerconnection.addIceCandidate(data.candidate)
+  } catch (error) {
+    console.error(
+      "error occurred while trying to add received ice candidate",
+      err
+    )
   }
 }
